@@ -1,0 +1,170 @@
+body {
+    background-color: #323232;
+    background-image: url(/img/background.png);
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+    text-align: center;
+}
+.project {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 10px;
+}
+
+.project-header {
+    background-color: #3B689C;
+    border-right: 1px solid #234c88;
+    border-left: 1px solid #234c88;
+    color: #fff;
+    font-size: 18px;
+    padding: 0 15px;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+}
+
+.project-name {
+    text-align: left;
+    padding-left: 40px;
+    line-height: 50px;
+    font-weight: normal;
+    background: url(/img/calendar.png) 0 45% no-repeat;
+}
+
+input.project-name-ed {
+    width: 80%;
+    background-color: #3b689c;
+    border: 0;
+}
+
+.project-actions-block {
+    float: right;
+    width: 20%;
+    height: 50px;
+}
+
+.project-action {
+    float: right;
+    padding: 25px 17px;
+}
+.project-delete {
+   background: url(/img/trash.png) 13px 50% no-repeat;
+
+}
+
+.project-edit{
+	    background: url(/img/pencil.png) 13px 50% no-repeat;
+
+}
+.new-task-bar {
+    padding: 5px 0 5px 35px;    
+    background: url(/img/plus.png) 13px 50% no-repeat;
+	background-color: #cecece;
+	border-right: 1px solid #b8b6af;
+    border-left: 1px solid #b8b6af;
+    line-height: 50px;
+
+}
+
+.new-task {
+    width: 75% !important;
+    margin: 0;
+    border-radius: 0;
+}
+.add-task-btn{
+	width: 20% !important;
+    margin: 0;
+    border-radius: 0 7px 7px 0px;
+}
+
+.task-block{
+    height: 50px;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    text-align: initial;
+}
+
+.status-block {
+	width: 40px;
+	height: 100%;
+	padding: 15px 15px;
+	float: left;
+}
+
+.separator {
+	width: 7px;
+    height: 100%;
+    float: left;
+    border-right: 2px solid #f5e7eb;
+    border-left: 2px solid #f5e7eb;
+    margin-right: 10px;
+}
+
+.task-name {
+    height: 100%;
+    padding: 5px 15px;
+    float: left;
+    width: 65%;
+    border: 0;
+}
+
+.task-block:hover {
+	background-color: #fcfed5;
+}
+
+.actions-block {
+    height: 100%;
+    float: right;
+    border-left: 2px solid #e8eceb;
+    width: 20%;
+}
+.task-action {
+    float: right;
+    padding: 25px 17px;
+}
+.task-sort {
+	background: url(/img/drag-small.png) 50% no-repeat;
+}
+
+.task-edit {
+	background: url(/img/pencil-small.png) 50% no-repeat;
+}
+
+.task-delete {
+	background: url(/img/trash-small.png) 50% no-repeat;
+}
+
+.notice-block{
+    position: absolute;
+    width: 400px;
+    right: 20px;
+    top: 20px;
+}
+
+.notice{
+    border: 1px solid #3b689c;
+    border-radius: 5px;
+    background: #0288D1;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 10px;
+    z-index: 99999;
+    margin: 10px 0;
+}
+
+.notice-message {
+    color: #FFF;
+    padding: 20px 10px;
+}
+
+
+
+
+.auth-container{
+	/*margin: 0 auto;*/
+	/*max-width: 600px;*/
+	border: 1px solid black;
+	/*background-color: red;*/
+	text-align: center;
+}
+
+.helper {
+    padding: 15px;
+    margin: 10px 0;
+}
