@@ -20,6 +20,10 @@ Class ProjectController Extends ControllerCore {
 			$this->result->registerError('Incorect data: task_id: NULL');
 		} 
 
+		if (!$this->isCorrectUser($task_id)) {
+			$this->result->registerError('Incorect data: User');
+		}
+
 		if ($this->result->hasErrors()) {
 				$this->result->echoJsonResult();
 		}
@@ -121,6 +125,11 @@ Class ProjectController Extends ControllerCore {
 				$this->result->echoJsonResult();
 		}
 
+		if (!$this->isCorrectUser($task_id)) {
+			$this->result->registerError('Incorect data: User');
+			$this->result->echoJsonResult();
+		}
+
 		$project = new Project($this->registry);
 
 		$task = $project->updateTaskName($task_id,$name);
@@ -183,6 +192,17 @@ Class ProjectController Extends ControllerCore {
 
 			$this->result->echoJsonResult();
 		}
+	}
+
+	public function isCorrectUser($task_id){
+		$project = new Project($this->registry);
+
+		$user_id = $project->getUserIDbytaskID($task_id);
+
+		if (!$user_id || $user_id != $this->registry['user_id']) {
+			return false;
+		} 
+		return true;
 	}
 
 	public function getRequestParam($name) {

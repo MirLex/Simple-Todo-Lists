@@ -285,4 +285,23 @@ class Project {
 		$result = $new_user_id;
 		return $result;
 	}
+
+	public function getUserIDbytaskID($task_id) {
+		$query = "SELECT user_id FROM projects WHERE id = (SELECT project_id FROM tasks WHERE id = :task_id)";
+
+		$sth = $this->db->prepare($query);
+
+		$sth->execute(
+			array(
+				":task_id" => $task_id,
+			)
+		);
+		$row = $sth->fetch();
+
+		if (!$row) {
+			return false;
+		} else {
+			return $row['user_id'];
+		}
+	}
 }
