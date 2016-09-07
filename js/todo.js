@@ -152,7 +152,7 @@
 			});
 		};
 
-		function addProject(project_id) {
+		function addProject(project_id,project_name=null) {
 			var new_project = $('\
 				<div class="project" data-id-project="'+project_id+'" data-mode-project="create">\
 					<div class="project-header">\
@@ -216,9 +216,6 @@
 			new_project.find('.project-actions-block').before(project_name_ed);
 			new_project.find('.new-task').after(project_add_task_btn);
 
-
-
-
 			new_project.hover(function() {
 				$(this).find('.project-actions-block').removeClass('hidden');
 			}, function() {
@@ -227,8 +224,12 @@
 
 			$(new_project).insertBefore('#add-project-btn');
 
-			$('[data-id-project="'+project_id+'"]').find('.project-name-ed').removeAttr('disabled');;
-			$('[data-id-project="'+project_id+'"]').find('.project-name-ed').focus();
+			if (typeof(project_name) == 'string') {
+				$('[data-id-project="'+project_id+'"]').find('.project-name-ed').val(project_name);
+			} else {
+				$('[data-id-project="'+project_id+'"]').find('.project-name-ed').removeAttr('disabled');;
+				$('[data-id-project="'+project_id+'"]').find('.project-name-ed').focus();
+			}
 		};
 
 		function addTask(project_id,task_id,task_name) {
@@ -308,7 +309,7 @@
 
 
 			for (var index in projects) {
-				addProject(projects[index]['id']);
+				addProject(projects[index]['id'],projects[index]['name']);
 
 				if (typeof(projects[index]['tasks']) != 'undefined') {
 					for (task in projects[index]['tasks']) {
