@@ -304,7 +304,17 @@
 		  </form>\
 			<div class="col-md-6 col-md-offset-3" id="projects-list">\
 				<button type="button" class="btn btn-primary btn-lg" id="add-project-btn">Add TODO List</button>\
-			</div>')
+			</div>');
+
+			$('#add-project-btn').click(function() {
+				var temp_id = 'temp_' + parseInt(Math.random()* new Date().getTime()); 
+				addProject(temp_id);
+			});
+
+			$('#logout').click(function() {
+				console.log('click logout');
+				logout();
+			});
 
 
 
