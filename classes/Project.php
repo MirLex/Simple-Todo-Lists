@@ -331,4 +331,36 @@ class Project {
 			return $row['user_id'];
 		}
 	}
+
+	// get the count of all tasks in each project, order by tasks count descending
+	// get the count of all tasks in each project, order by projects names
+	public function getTasksCount($user_id,$orderBy = 'tasks', $orderType = 'DESC') {
+		if (!in_array($orderBy, array('tasks','name'))) {
+			return false;
+		}
+		if (!in_array($orderType, array('DESC','ASC'))) {
+			return false;
+		}
+
+		$query = "SELECT p.id, p.name as name, 
+			(SELECT COUNT(*) FROM tasks AS t WHERE t.project_id = p.id) AS tasks 
+			FROM projects AS p
+			WHERE p.user_id = :user_id
+			ORDER BY ".$orderBy." ". $orderType;
+
+		$sth = $this->db->prepare($query);
+
+		$sth->execute(
+			array(
+				":user_id" => $user_id,
+			)
+		);
+		$row = $sth->fetchAll();
+
+		if (!$row) {
+			return false;
+		} else {
+			return $row;
+		}
+	}
 }
