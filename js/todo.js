@@ -82,7 +82,7 @@
 						notice(result['errors']);
 					} else {
 						notice(result['data']['status']);
-						addTask(id_project ,result['data']['task_id'],task_name);
+						addTask(id_project ,result['data']['task_id'],task_name,"new");
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown)
@@ -110,8 +110,33 @@
 						notice(result['errors']);
 					} else {
 						notice(result['data']['status']);
-						id_project = $('[data-id-task="'+task_id+'"]').data('id-task');
-						addTask(id_project ,result['data']['task_id'],task_name);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown)
+				{
+					notice(XMLHttpRequest);
+					notice(textStatus);
+					notice(errorThrown);
+				}
+			});
+		};		
+
+		function updateTaskStatus(task_id,status) {
+			$.ajax({
+				type: 'POST',
+				url: '',
+				async: true,
+				cache: false,
+				data: 'controller=project&action=updateTaskStatus&ajax=true&task_id='+task_id+'&status='+status,
+				
+				success: function(jsonData,textStatus,jqXHR)
+				{
+					result = JSON.parse(jsonData);
+
+					if (result['errors'].length > 0) {
+						notice(result['errors']);
+					} else {
+						notice(result['data']['status']);
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown)
@@ -232,7 +257,7 @@
 			}
 		};
 
-		function addTask(project_id,task_id,task_name) {
+		function addTask(project_id,task_id,task_name,status) {
 			var project = $('[data-id-project="'+project_id+'"]');
 
 						project.find('.new-task').val("");
@@ -240,13 +265,25 @@
 						var new_task = $('\
 							<li class="list-group-item task-block" data-id-task="'+task_id+'">\
 										<div class="status-block">\
-											<input type="checkbox" value="">\
 										</div>\
 										<div class="separator"></div>\
 										<div class="actions-block hidden">\
 											<span class="task-action task-sort"></span>\
 										</div>\
 									</li>');
+						var task_status = $('<input type="checkbox">');
+							task_status.click(function() {
+								task_id = $(this).parents('.task-block').data('id-task');
+								if ($(this).prop('checked') == true) {
+									status = 'completed';
+								} else {
+									status = 'new';
+								}
+								updateTaskStatus(task_id,status);
+							});
+							if (status == 'completed') {
+								task_status.prop( "checked", true );
+							}
 
 						var task_name = $('<input class="task-name inline-edit" type="text" value="'+ task_name +'"  disabled>');
 
@@ -273,6 +310,7 @@
 								}
 							});
 
+						new_task.find('.status-block').append(task_status);
 						new_task.find('.separator').after(task_name);
 						new_task.find('.task-sort').before(task_delete);
 						new_task.find('.task-sort').before(task_edit);
@@ -323,7 +361,7 @@
 
 				if (typeof(projects[index]['tasks']) != 'undefined') {
 					for (task in projects[index]['tasks']) {
-						addTask(projects[index]['id'],projects[index]['tasks'][task].id,projects[index]['tasks'][task].name)
+						addTask(projects[index]['id'],projects[index]['tasks'][task].id,projects[index]['tasks'][task].name,projects[index]['tasks'][task].status);
 					}
 				}
 			}

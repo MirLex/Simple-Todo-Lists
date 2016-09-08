@@ -216,6 +216,33 @@ class Project {
 			die();
 		} 
 		return $result;
+	}	
+
+	public function updateTaskStatus($task_id, $status) {
+		$query = "UPDATE tasks SET status = :status WHERE id = :task_id";
+		$sth = $this->db->prepare($query);
+
+		try {
+			$this->db->beginTransaction();
+			$result = $sth->execute(
+				array(
+					':task_id' => $task_id,
+					':status' => $status,
+				)
+			);
+			$this->db->commit();
+		} catch (\PDOException $e) {
+			$this->db->rollback();
+			echo "Database error: " . $e->getMessage();
+			die();
+		}
+
+		if (!$result) {
+			$info = $sth->errorInfo();
+			printf("Database error %d %s", $info[1], $info[2]);
+			die();
+		} 
+		return $result;
 	}
 
 	public function updateProject($user_id,$id_project,$name) {

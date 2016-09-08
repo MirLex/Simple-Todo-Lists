@@ -145,6 +145,45 @@ Class ProjectController Extends ControllerCore {
 		}
 	}
 
+	function updateTaskStatus($args=null) {
+		$this->request = $args;
+
+		$task_id = $this->getRequestParam("task_id");
+		$status = $this->getRequestParam("status");
+
+		if (!$task_id){
+			$this->result->registerError('Incorect data: task_id: NULL');
+		}
+
+		if (!in_array($status, array('new','completed'))) {
+			$this->result->registerError('Incorect data: status');
+		}
+
+
+		if ($this->result->hasErrors()) {
+				$this->result->echoJsonResult();
+		}
+
+		if (!$this->isCorrectUser($task_id)) {
+			$this->result->registerError('Incorect data: User');
+			$this->result->echoJsonResult();
+		}
+
+		$project = new Project($this->registry);
+
+		$task = $project->updateTaskStatus($task_id,$status);
+
+		if (!$task) {
+			$this->result->registerError('Error:');
+		} else {
+			$this->result->setData(array(
+				'status' => 'Task status is updated', 
+			));
+
+			$this->result->echoJsonResult();
+		}
+	}
+
 	function updateName($args = null){
 		$this->request = $args;
 
