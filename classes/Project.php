@@ -363,4 +363,83 @@ class Project {
 			return $row;
 		}
 	}
+
+	// get the tasks for all projects having the name beginning with letter
+	public function getTasksByProjectName($user_id,$firstLetter) {
+	
+	$query = "SELECT 
+				t.id, t.name, t.status ,p.name as project_name 
+				FROM tasks as t 
+				LEFT JOIN projects as p ON t.project_id = p.id 
+				WHERE p.user_id = :user_id AND 
+				p.name LIKE '".$firstLetter."%' ";
+
+		$sth = $this->db->prepare($query);
+
+		$sth->execute(
+			array(
+				":user_id" => $user_id,
+			)
+		);
+		$row = $sth->fetchAll();
+
+		if (!$row) {
+			return false;
+		} else {
+			return $row;
+		}
+	}
+
+	// get the list of all projects containing the letter in the middle of the name, and show the tasks count near each project.
+	public function getProjectsByLatterInName($user_id,$letter) {
+	
+	$query = "SELECT p.user_id, p.id, p.name, 
+				(SELECT COUNT(*) FROM tasks AS t WHERE t.project_id = p.id) AS tasks 
+				FROM projects AS p
+				WHERE p.user_id = :user_id AND
+				p.name LIKE '%".$letter."%' ";
+
+		$sth = $this->db->prepare($query);
+
+		$sth->execute(
+			array(
+				":user_id" => $user_id,
+			)
+		);
+		$row = $sth->fetchAll();
+
+		if (!$row) {
+			return false;
+		} else {
+			return $row;
+		}
+	}
+
+	// get the list of tasks with duplicate names. Order alphabetically
+	public function getDuplicateTasks($user_id) {
+	
+		$query = "SELECT t.name, COUNT(*)  
+				FROM tasks as t 
+				LEFT JOIN projects as p ON t.project_id = p.id 
+				WHERE p.user_id = :user_id
+				GROUP BY
+				t.name
+				HAVING COUNT(*)>1
+				ORDER BY name ASC";
+
+		$sth = $this->db->prepare($query);
+
+		$sth->execute(
+			array(
+				":user_id" => $user_id,
+			)
+		);
+		$row = $sth->fetchAll();
+
+		if (!$row) {
+			return false;
+		} else {
+			return $row;
+		}
+	}
 }
